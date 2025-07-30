@@ -16,6 +16,19 @@ function App() {
         successfulBids: 12,
     });
 
+    const [test, setTest] = useState<number>(0);
+
+    React.useEffect(() => {
+        fetch("/api/test")
+            .then((res) => res.json())
+            .then((data) => {
+                setTest(data.number);
+            })
+            .catch((err) => {
+                console.error("에러:", err);
+            });
+    }, []);
+
     React.useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             const profileMenu = document.getElementById("profile-menu");
@@ -117,7 +130,7 @@ function App() {
             <nav className="bg-white shadow-sm">
                 <div className="max-w-[1440px] mx-auto px-6 h-16 flex items-center justify-between">
                     <div className="flex items-center space-x-8">
-                        <h1 className="text-2xl font-bold text-blue-600">SHOEBID</h1>
+                        <h1 className="text-2xl font-bold text-blue-600"> {test}</h1>
                         <div className="hidden md:flex space-x-6">
                             <a
                                 href="#"
