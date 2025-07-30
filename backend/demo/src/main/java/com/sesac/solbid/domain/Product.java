@@ -1,17 +1,33 @@
 package com.sesac.solbid.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.sesac.solbid.domain.baseentity.BaseEntity;
+import com.sesac.solbid.domain.enums.ProductStatus;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
 @Entity
-public class Product {
+public class Product extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long productId;
+
+    @Column(unique = true, nullable = false)
+    private Long sellerId;
+
+    @Column(unique = true, nullable = false)
+    private Long categoryId;
+
+    @Column(unique = true, nullable = false)
+    private String title;
+
+    @Enumerated(EnumType.STRING)
+    private ProductStatus productStatus;
+
+
+
+
+
 }
