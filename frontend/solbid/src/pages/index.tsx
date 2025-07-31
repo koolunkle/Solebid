@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {useNavigate} from "react-router-dom";
+
 function Index() {
 
     const navigate = useNavigate();
@@ -388,12 +389,8 @@ function Index() {
                         <div
                             key={index}
                             className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                            onClick={() => navigate(`/productListToCategory/${category.name}`)}
                         >
-                            <a
-                                href="https://readdy.ai/home/8c14b666-4886-429c-ad07-c16c2cd22c03/36955b4b-994d-436e-b9f3-ae49bfc33bba"
-                                data-readdy="true"
-                                className="block"
-                            >
                                 <div className="flex items-center justify-between">
                                     <div>
                                         <h4 className="text-lg font-medium text-gray-900">
@@ -407,7 +404,6 @@ function Index() {
                                         className={`fas ${category.icon} text-2xl text-blue-500`}
                                     ></i>
                                 </div>
-                            </a>
                         </div>
                     ))}
                 </div>
