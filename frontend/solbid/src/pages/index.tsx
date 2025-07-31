@@ -1,5 +1,9 @@
 import React, { useState } from "react";
-function App() {
+import {useNavigate} from "react-router-dom";
+function Index() {
+
+    const navigate = useNavigate();
+
     const [currentTab, setCurrentTab] = useState("trending");
     const [showLoginModal, setShowLoginModal] = useState(false);
     const [loginForm, setLoginForm] = useState({
@@ -172,14 +176,12 @@ function App() {
                                 </button>
                             </a>
                         </div>
-                        <a
-                            href="https://readdy.ai/home/8c14b666-4886-429c-ad07-c16c2cd22c03/7349df04-847b-4fea-bce2-0d3f842304f4"
-                            data-readdy="true"
-                        >
-                            <button className="px-4 py-2 bg-blue-500 text-white !rounded-button hover:bg-blue-600 cursor-pointer whitespace-nowrap">
+
+                            <button className="px-4 py-2 bg-blue-500 text-white !rounded-button hover:bg-blue-600 cursor-pointer whitespace-nowrap"
+                                    onClick={() => navigate("/productRegister")}
+                            >
                                 경매 등록
                             </button>
-                        </a>
                         {isLoggedIn ? (
                             <div className="relative">
                                 <button
@@ -706,4 +708,4 @@ function App() {
         </div>
     );
 };
-export default App
+export default Index
