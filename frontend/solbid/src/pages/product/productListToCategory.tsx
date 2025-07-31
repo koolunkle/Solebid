@@ -163,57 +163,6 @@ function ProductListToCategory(){
 
     return (
         <div className="min-h-screen bg-gray-50">
-            {/* Navigation */}
-            <nav className="bg-white shadow-sm">
-                <div className="max-w-[1440px] mx-auto px-6 h-16 flex items-center justify-between">
-                    <div className="flex items-center space-x-8">
-                        <a
-                            href="https://readdy.ai/home/8c14b666-4886-429c-ad07-c16c2cd22c03/ad0cf9eb-0d08-4f31-aba6-a87043edcd2e"
-                            data-readdy="true"
-                        >
-                            <h1 className="text-2xl font-bold text-blue-600 cursor-pointer">
-                                SHOEBID
-                            </h1>
-                        </a>
-                        <div className="hidden md:flex space-x-6">
-                            <a
-                                href="#"
-                                className="text-gray-600 hover:text-gray-900 cursor-pointer"
-                            >
-                                경매
-                            </a>
-                            <a
-                                href="#"
-                                className="text-gray-600 hover:text-gray-900 cursor-pointer"
-                            >
-                                브랜드
-                            </a>
-                            <a
-                                href="#"
-                                className="text-gray-600 hover:text-gray-900 cursor-pointer"
-                            >
-                                랭킹
-                            </a>
-                        </div>
-                    </div>
-                    <div className="flex items-center space-x-4">
-                        <div className="relative">
-                            <input
-                                type="search"
-                                placeholder="상품 검색"
-                                className="w-64 pl-10 pr-4 py-2 bg-gray-100 border-none rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            />
-                            <i className="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm"></i>
-                        </div>
-                        <button className="px-4 py-2 bg-blue-500 text-white !rounded-button hover:bg-blue-600 cursor-pointer whitespace-nowrap">
-                            경매 등록
-                        </button>
-                        <button className="px-4 py-2 border border-gray-300 text-gray-700 !rounded-button hover:bg-gray-50 cursor-pointer whitespace-nowrap">
-                            로그인
-                        </button>
-                    </div>
-                </div>
-            </nav>
 
             {/* Breadcrumb */}
             <div className="max-w-[1440px] mx-auto px-6 py-4">
