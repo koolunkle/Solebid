@@ -44,7 +44,7 @@ public class S3Service {
         return "https://" + bucket + ".s3.ap-northeast-2.amazonaws.com/" + fileName;
     }
 
-    public MultipartFile downloadAsMultipartFile(String fileName) throws IOException {
+    public MultipartFile download(String fileName) throws IOException {
         GetObjectRequest getObjectRequest = GetObjectRequest.builder()
                 .bucket(bucket)
                 .key(fileName)

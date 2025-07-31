@@ -1,8 +1,9 @@
 package com.sesac.solbid.controller;
 
+import com.sesac.solbid.dto.ProductRegisterDto;
 import com.sesac.solbid.exception.CustomException;
 import com.sesac.solbid.exception.ErrorCode;
-import com.sesac.solbid.service.S3Service;
+import com.sesac.solbid.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,21 +12,22 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-public class UploadController {
-    private final S3Service s3Service;
+public class ProductRegisterController {
+    private final ProductService productService;
 
-    @PostMapping("/api/upload")
-    public ResponseEntity<Map<String,Object>> uploadFile(@RequestPart MultipartFile file) {
+    @PostMapping("/api/productRegister")
+    public ResponseEntity<Map<String,Object>> productRegister(
+            @RequestPart List<MultipartFile> files,
+            @RequestPart ProductRegisterDto dto)
+    {
         try {
-            String imageUrl = s3Service.upload(file);
-            return ResponseEntity.ok(Map.of(
-                    "success", true,
-                    "imageUrl", imageUrl
-            ));
+            productService.registerProduct(dto, files);
+            return ResponseEntity.ok(Map.of("success", true));
         } catch (IOException e) {
             throw new CustomException(ErrorCode.FILE_UPLOAD_FAILED);
         }

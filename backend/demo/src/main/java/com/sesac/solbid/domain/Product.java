@@ -5,10 +5,12 @@ import com.sesac.solbid.domain.enums.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import software.amazon.awssdk.services.s3.endpoints.internal.Value;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +29,7 @@ public class Product extends BaseEntity {
     private User seller;
 
     //이 상품과 join된 상품 이미지들
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "product", orphanRemoval = true)
     private List<ProductImage> productImages = new ArrayList<>();
 
     //상품 카테고리(운동화, 농구화...)
@@ -40,7 +42,7 @@ public class Product extends BaseEntity {
     @Column(nullable = false)
     private ProductStatus productStatus = ProductStatus.AVAILABLE;
 
-    //상품 컨디션(새 상품, 중고, 박스 포함, 인증서 포함..)
+    //상품 컨디션(새 상품, 중고)
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ProductCondition productCondition;
@@ -49,11 +51,6 @@ public class Product extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ProductBrand productBrand;
-
-    //상품 경매 기간(1일, 5일, 7일..)
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private ProductClosingTime productClosingTime;
 
     //상품 사이즈
     @Column(nullable = false)
@@ -79,8 +76,32 @@ public class Product extends BaseEntity {
     @Min(0)
     private int confirmationPrice;
 
+    @Column(nullable = false)
+    private LocalDate startDate;
+
+    @Column(nullable = false)
+    private LocalDate endDate;
+
     //상품 현재 입찰가
     @Column(nullable = true)
     @Min(0)
     private int currentPrice;
+
+    @Builder
+    public Product(String name, String brand, String category, String size, int startPrice,
+                   int confirmationPrice, String startDate, String endDate, String condition,
+                   String description, User seller)
+    {
+        this.name = name;
+        this.productBrand = ProductBrand.from(brand);
+        this.productCategory = ProductCategory.from(category);
+        this.size = Integer.parseInt(size);
+        this.startPrice = startPrice;
+        this.confirmationPrice = confirmationPrice;
+        this.startDate = LocalDate.parse(startDate);
+        this.endDate = LocalDate.parse(endDate);
+        this.productCondition = ProductCondition.from(condition);
+        this.description = description;
+        this.seller = seller;
+    }
 }
