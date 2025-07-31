@@ -4,17 +4,18 @@ import '../css/index.css'
 
 function ProductRegister()
 {
-
     const navigate = useNavigate();
 
-    const [selectedImages, setSelectedImages] = useState<string[]>([]);
+    const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+    const [previewUrls, setPreviewUrls] = useState<string[]>([]);
+
     const [productInfo, setProductInfo] = useState({
         name: "",
         brand: "",
         category: "",
         size: "",
         startPrice: "",
-        buyNowPrice: "",
+        confirmationPrice: "",
         startDate: "",
         endDate: "",
         condition: "",
@@ -29,18 +30,21 @@ function ProductRegister()
         "New Balance",
         "Converse",
         "Vans",
-        "Jordan",
+        "PUMA",
+        "REEBOK",
+        "ASICS",
     ];
     const categories = ["스니커즈", "러닝화", "농구화", "캔버스화"];
-    const sizes = Array.from({ length: 20 }, (_, i) => 230 + 5 * i);
+    const sizes = Array.from({ length: 15 }, (_, i) => 230 + 5 * i);
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
-        if (files && selectedImages.length < 5) {
-            const newImages = Array.from(files).slice(0, 5 - selectedImages.length);
-            setSelectedImages([
-                ...selectedImages,
-                ...newImages.map((file) => URL.createObjectURL(file)),
+        if (files && selectedFiles.length < 5) {
+            const newFiles = Array.from(files).slice(0, 5 - selectedFiles.length);
+            setSelectedFiles([...selectedFiles, ...newFiles]);
+            setPreviewUrls([
+                ...previewUrls,
+                ...newFiles.map(file => URL.createObjectURL(file)),
             ]);
         }
     };
@@ -63,8 +67,8 @@ function ProductRegister()
         if (!productInfo.startPrice) {
             newErrors.startPrice = "시작가를 입력해주세요.";
         }
-        if (!productInfo.buyNowPrice) {
-            newErrors.buyNowPrice = "즉시 구매가를 입력해주세요.";
+        if (!productInfo.confirmationPrice) {
+            newErrors.confirmationPrice = "즉시 구매가를 입력해주세요.";
         }
         if (!productInfo.startDate) {
             newErrors.startDate = "경매 시작일을 선택해주세요.";
@@ -80,15 +84,41 @@ function ProductRegister()
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleSubmit = () => {
-        if (validateForm()) {
-            setShowSuccessToast(true);
-            setTimeout(() => {
-                setShowSuccessToast(false);
+    const handleSubmit = async () => {
 
-            }, 2000);
+        if(!validateForm())
+            return;
+
+        const formData = new FormData();
+        selectedFiles.forEach(file => {formData.append("files", file)});
+        formData.append("name", productInfo.name);
+        formData.append("brand", productInfo.brand);
+        formData.append("category", productInfo.category);
+        formData.append("size", productInfo.size);
+        formData.append("startPrice", productInfo.startPrice.toString());
+        formData.append("confirmationPrice", productInfo.confirmationPrice.toString());
+        formData.append("startDate", productInfo.startDate);
+        formData.append("endDate", productInfo.endDate);
+        formData.append("condition", productInfo.condition);
+        formData.append("description", productInfo.description);
+
+        const res = await fetch("/api/productRegister", {
+            method: "POST",
+            body : formData,
+        });
+
+        if(!res.ok){
+            const errorData = await res.json();
+            alert(errorData.message);
+            return;
         }
-    };
+
+        setShowSuccessToast(true);
+        setTimeout(() => {
+            setShowSuccessToast(false);
+
+        }, 2000);
+    }
 
     return (
         <div className="min-h-screen bg-gray-50">
@@ -131,9 +161,9 @@ function ProductRegister()
                                 </p>
                             </label>
                         </div>
-                        {selectedImages.length > 0 && (
+                        {previewUrls.length > 0 && (
                             <div className="grid grid-cols-5 gap-4 mt-4">
-                                {selectedImages.map((image, index) => (
+                                {previewUrls.map((image, index) => (
                                     <div
                                         key={index}
                                         className="relative aspect-square bg-gray-100 rounded-lg overflow-hidden"
@@ -145,8 +175,8 @@ function ProductRegister()
                                         />
                                         <button
                                             onClick={() =>
-                                                setSelectedImages(
-                                                    selectedImages.filter((_, i) => i !== index),
+                                                setPreviewUrls(
+                                                    previewUrls.filter((_, i) => i !== index),
                                                 )
                                             }
                                             className="absolute top-2 right-2 bg-gray-900 bg-opacity-50 text-white rounded-full w-6 h-6 flex items-center justify-center"
@@ -300,11 +330,11 @@ function ProductRegister()
                                         type="text"
                                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                         placeholder="즉시 구매가 입력"
-                                        value={productInfo.buyNowPrice}
+                                        value={productInfo.confirmationPrice}
                                         onChange={(e) =>
                                             setProductInfo({
                                                 ...productInfo,
-                                                buyNowPrice: e.target.value.replace(/[^0-9]/g, ""),
+                                                confirmationPrice: e.target.value.replace(/[^0-9]/g, ""),
                                             })
                                         }
                                     />

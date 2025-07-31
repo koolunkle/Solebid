@@ -2,6 +2,7 @@ package com.sesac.solbid.domain;
 
 import com.sesac.solbid.domain.baseentity.BaseEntity;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -34,4 +35,13 @@ public class ProductImage extends BaseEntity {
     //이 이미지가 썸네일로 사용되는가?
     @Column(nullable = false)
     private boolean isThumbnail;
+
+    @Builder
+    public ProductImage(Product product, String filePath, String fileName, Integer sortOrder, boolean isThumbnail) {
+        this.product = product;
+        this.filePath = filePath;
+        this.fileName = fileName;
+        this.sortOrder = sortOrder;
+        this.isThumbnail = isThumbnail;
+    }
 }
