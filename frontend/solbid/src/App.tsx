@@ -1,7 +1,7 @@
 import {  Routes, Route } from 'react-router-dom';
 import Index from './pages/index';
-import ProductRegister from "./pages/productRegister";
-import ProductListToCategory from "./pages/productListToCategory.tsx";
+import ProductRegister from "./pages/product/productRegister.tsx";
+import ProductListToCategory from "./pages/product/productListToCategory.tsx";
 
 function App() {
     return (

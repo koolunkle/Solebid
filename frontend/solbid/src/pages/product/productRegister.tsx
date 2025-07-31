@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import {useNavigate} from "react-router-dom";
-import '../css/index.css'
+import '../../css/index.css'
 
 function ProductRegister()
 {
